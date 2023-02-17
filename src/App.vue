@@ -82,11 +82,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import TheHeader from '@/components/TheHeader.vue'
-import BaseButton from '@/components/BaseButton.vue'
-import Countdown from '@/components/Countdown.vue'
-import Modal from '@/components/Modal.vue'
+import { Component, Vue } from "vue-property-decorator";
+import TheHeader from "@/components/TheHeader.vue";
+import BaseButton from "@/components/BaseButton.vue";
+import Countdown from "@/components/Countdown.vue";
+import Modal from "@/components/Modal.vue";
 
 @Component({
   components: {
@@ -97,15 +97,15 @@ import Modal from '@/components/Modal.vue'
   },
 })
 export default class App extends Vue {
-  text = ''
-  isModalOpened = true
+  text = "";
+  isModalOpened = true;
 
-  openModal() {
-    this.isModalOpened = true
+  openModal(): void {
+    this.isModalOpened = true;
   }
 
-  closeModal() {
-    this.isModalOpened = false
+  closeModal(): void {
+    this.isModalOpened = false;
   }
 }
 </script>
@@ -126,7 +126,7 @@ export default class App extends Vue {
   font-family: $font-family-default;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -174,7 +174,7 @@ export default class App extends Vue {
     box-shadow: 0px 4px 4px rgba($black, 0.06), inset 0 0 0 1px $gray;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 50%;
       top: -56px;

@@ -55,7 +55,7 @@ export default class Modal extends Vue {
     card: false,
   }
 
-  get checkFields() {
+  get checkFields(): boolean {
     return this.card.length === 16 + 2 * 3
   }
 
@@ -63,8 +63,8 @@ export default class Modal extends Vue {
     this.$emit('closeModal')
   }
 
-  @Watch('card')
-  watchCard() {}
+  // @Watch("card")
+  // watchCard() {}
 }
 </script>
 
