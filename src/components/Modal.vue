@@ -60,7 +60,7 @@ export default class Modal extends Vue {
   }
 
   closeModal(): void {
-    this.$emit('closeModal')
+    // this.$emit('closeModal')
   }
 
   // @Watch("card")
