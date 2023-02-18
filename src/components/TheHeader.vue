@@ -45,4 +45,10 @@ export default class TheHeader extends Vue {}
     color: $orange;
   }
 }
+
+@media screen and (max-width: 763px) {
+  .header {
+    padding: 12px 16px;
+  }
+}
 </style>

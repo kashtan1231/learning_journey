@@ -32,6 +32,10 @@ p {
   color: $gray-dark;
 }
 
+input {
+  font-family: $font-family-default;
+}
+
 .font-weight-400 {
   font-weight: 400;
 }
@@ -46,4 +50,10 @@ p {
 
 .font-weight-800 {
   font-weight: 800;
+}
+
+@media screen and (max-width: 763px) {
+  h1 {
+    font-size: 32px;
+  }
 }
