@@ -1,22 +1,9 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'scroll-hidden': isModalOpened }">
     <TheHeader />
 
     <div class="page">
       <div class="page__wrapper">
-        <div class="card__text-and-timer mobile">
-          <div class="card__text">
-            <h3 class="card__text-title font-weight-800">
-              3-day trial for
-              <span class="orange-word">$0.99</span>
-            </h3>
-            <h4 class="card__text-subtitle">Then $9.99</h4>
-            <h5 class="card__text-description">$39.99/week</h5>
-          </div>
-
-          <Countdown :secondsTimer="11" />
-        </div>
-
         <div class="text-and-button">
           <h1 class="text-and-button__title">
             Start your learning journey now
@@ -40,20 +27,24 @@
         </div>
 
         <div class="card">
-          <div class="card__text-and-timer desktop">
+          <div
+            :class="['card__text-and-timer', { 'time-expired': isTimeExpired }]"
+          >
             <div class="card__text">
               <h3 class="card__text-title font-weight-800">
                 3-day trial for
                 <span class="orange-word">$0.99</span>
               </h3>
-              <h4 class="card__text-subtitle">Then $9.99</h4>
-              <h5 class="card__text-description">$39.99/week</h5>
+              <h4 class="card__text-subtitle">{{ price }}</h4>
+              <h5 v-if="!isTimeExpired" class="card__text-description">
+                $39.99/week
+              </h5>
             </div>
 
-            <Countdown :secondsTimer="500" />
+            <Countdown @timeExpired="isTimeExpired = true" :secondsTimer="30" />
           </div>
 
-          <ul class="card__list">
+          <ul class="card__list desktop">
             <li>
               <h5>
                 Exclusive access to
@@ -73,21 +64,44 @@
           </ul>
 
           <BaseButton
-            class="card__button"
+            class="card__button desktop"
             text="Safe & secure payment"
             buttonStyle="green-white"
             imgSrc="lock"
           />
 
-          <p class="card__down-text">
-            $0.99 charged today. If you don't cancel at least 24 hours before
-            the end of the 3-day trial period, you will automatically be charged
-            the full price of $19.99/Month . You can cancel your subscription at
-            any time. By continuing, you indicate that you've read and agree to
-            our Terms & Conditions, Privacy Policy , Money Back , and
-            Subscription Terms .
+          <p class="card__down-text desktop">
+            {{ downText }}
           </p>
         </div>
+
+        <ul class="card__list mobile">
+          <li>
+            <h5>
+              Exclusive access to
+              <span class="orange-word font-weight-700">350+</span> learning
+              programs
+            </h5>
+          </li>
+          <li><h5>Personalized course plan</h5></li>
+          <li><h5>Comfy learning schedule made by you</h5></li>
+          <li>
+            <h5>
+              <span class="orange-word font-weight-700">24/7</span> tutor
+              support in a secure chat
+            </h5>
+          </li>
+          <li><h5>Lifetime access to materials</h5></li>
+        </ul>
+
+        <BaseButton
+          class="card__button mobile"
+          text="Safe & secure payment"
+          buttonStyle="green-white"
+          imgSrc="lock"
+        />
+
+        <p class="card__down-text mobile">{{ downText }}</p>
       </div>
     </div>
 
@@ -112,12 +126,18 @@ import Modal from '@/components/Modal.vue'
 })
 export default class App extends Vue {
   text = ''
+  downText =
+    "$0.99 charged today. If you don't cancel at least 24 hours before the end of the 3-day trial period, you will automatically be charged the full price of $19.99/Month . You can cancel your subscription at any time. By continuing, you indicate that you've read and agree to our Terms & Conditions, Privacy Policy , Money Back , and Subscription Terms."
   isModalOpened = false
+  isTimeExpired = false
+
+  get price(): string {
+    return this.isTimeExpired ? 'Then $39.99/week' : 'Then $9.99'
+  }
 
   openModal(): void {
     this.isModalOpened = true
   }
-
   closeModal(): void {
     this.isModalOpened = false
   }
@@ -273,6 +293,10 @@ export default class App extends Vue {
   color: $orange;
 }
 
+.scroll-hidden {
+  overflow: hidden;
+}
+
 @media screen and (min-width: 764px) {
   .mobile {
     display: none !important;
@@ -284,8 +308,7 @@ export default class App extends Vue {
     padding: 24px 16px;
 
     &__wrapper {
-      display: flex;
-      flex-direction: column;
+      grid-template-columns: 1fr;
     }
 
     .text-and-button__button {
@@ -293,21 +316,35 @@ export default class App extends Vue {
     }
 
     .card {
-      padding: 0;
-      margin-top: 32px;
-      background: transparent;
-      box-shadow: unset;
+      margin-bottom: 24px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      order: -1;
 
       &::before {
         display: none;
       }
 
-      &__text-and-timer {
-        padding: 12px 16px;
-        margin-bottom: 24px;
-        box-shadow: 0px 4px 4px rgba($black, 0.06);
-        border-radius: 12px;
-        box-shadow: 0px 4px 4px rgba($black, 0.06), inset 0 0 0 1px $gray;
+      > :not(:last-child) {
+        margin-bottom: 0;
+      }
+
+      &__list {
+        margin-top: 32px;
+      }
+
+      &__button {
+        margin-top: 24px;
+      }
+
+      &__down-text {
+        margin-top: 24px;
+      }
+
+      .time-expired {
+        height: calc(92px - 24px);
+        justify-content: center;
+        text-align: center;
       }
     }
   }

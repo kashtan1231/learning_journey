@@ -39,17 +39,20 @@ export default class Countdown extends Vue {
     if (storageTimer !== null) {
       this.timeLeft = +storageTimer
     }
+    if (this.timeLeft < 0) this.$emit('timeExpired')
   }
 
   startCountdown(): void {
     const timeInterval = setInterval(() => {
+      this.timeLeft--
+      sessionStorage.setItem('timeLeft', this.timeLeft.toString())
+
       if (this.timeLeft <= -1) {
+        this.timeLeft = -1
+        this.$emit('timeExpired')
         clearInterval(timeInterval)
         return
       }
-
-      this.timeLeft--
-      sessionStorage.setItem('timeLeft', this.timeLeft.toString())
     }, 1000)
   }
 
@@ -65,7 +68,7 @@ export default class Countdown extends Vue {
   position: relative;
   display: flex;
   justify-content: center;
-  width: 160px;
+  min-width: 160px;
   height: fit-content;
   padding: 13px;
   background-color: $black;
@@ -106,5 +109,11 @@ export default class Countdown extends Vue {
 
 .little-time-shadow {
   box-shadow: 0 0 4px 0 $red;
+}
+
+@media screen and (max-width: 763px) {
+  .countdown {
+    min-width: 110px;
+  }
 }
 </style>
